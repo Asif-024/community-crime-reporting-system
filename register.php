@@ -27,17 +27,17 @@ if($conn -> query($sql) === TRUE)
     <h1> User Resigtration</h1>
     <form action="register.php" method="POST">
     First Name: <br>
-    <input type="text" name="first_name"><br><br>
+    <input type="text" name="first_name" required><br><br>
     Last Name: <br>
-    <input type="text" name="last_name"><br><br>
+    <input type="text" name="last_name" ><br><br>
     NID: <br>
-    <input type="number" name="NID"><br><br>
+    <input type="number" name="NID" required><br><br>
     Email: <br>
-    <input type="email" name="email"><br><br>
+    <input type="email" name="email" required><br><br>
     Phone: <br>
-    <input type="number" name="phone"><br><br>
+    <input type="number" name="phone" required><br><br>
     Password: <br>
-    <input type="password" name="password"><br><br>
+    <input type="password" name="password" required><br><br>
     <input type="submit" value="Register">
     </form>    
     </body>
