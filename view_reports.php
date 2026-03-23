@@ -32,11 +32,30 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>View Reports</title>
-</head>
+
 
 <body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <h1>All Crime Reports</h1>
 
 
@@ -66,6 +85,7 @@ $result = $conn->query($sql);
             <h3> Report ID: <?php echo $row['report_id']; ?></h3>
             <p><b>Description: </b> <?php echo $row['description']; ?></p>
             <p><b>Date: </b> <?php echo $row['submission_date']; ?></p>
+            <p><b>Status: <?php echo $row['status'];  ?></b></p>
 
 
             <!--show & form credibility count-->
