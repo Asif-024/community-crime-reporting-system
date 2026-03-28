@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (password_verify($password, $row['password'])) {
 
             //if the user is banned
-            if ($user['account_status'] === 'banned') {
+            if ($row['account_status'] === 'banned') {
                 die("Your account is banned");
             }
 
             //if the user is not varified 
-            if ($user['varification_status' !== 'approved']) {
+            if ($row['verification_status'] !== 'approved') {
                 die("Account is not approved");
             }
 
