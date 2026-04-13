@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                VALUES ('$user_id', '$badge_no', '$rank', '$station_id')";
                 $conn->query($police_sql);
             }
-            echo "<p style='color:green;'>Registered Successfully</p>";
+            echo "<center><p style='color:green;'>Registered Successfully<br><a href='login.php'>Login</a></p></center>";
         } else {
             echo "<p style='color:red;'>Error: " . $conn->error . "</p>";
         }
@@ -52,50 +52,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<body>
-    <h1> User Resigtration</h1>
-    <form action="register.php" method="POST">
-        First Name: <br>
-        <input type="text" name="first_name" required><br><br>
-        Last Name: <br>
-        <input type="text" name="last_name"><br><br>
-        NID: <br>
-        <input type="number" name="NID" required><br><br>
-        Email: <br>
-        <input type="email" name="email" required><br><br>
-        Phone: <br>
-        <input type="text" name="phone" required><br><br>
-        Role: <br>
-        <select name="role" onchange="policeFields(this.value)">
-            <option value="user">User</option>
-            <option value="police">Police</option>
-        </select><br><br>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
 
-        <!--IF POLICE-->
-        <div id="police_fields" style="display:none;">
-            Badge no: <br>
-            <input type="text" name="badge_no"> <br><br>
-            Rank: <br>
-            <input type="text" name="rank"> <br><br>
-            Station ID: <br>
-            <input type="text" name="station_id"><br><br>
-        </div>
-
-        <!--JAVASCRIPT FUNCTION-->
-        <script>
-            function policeFields(role) {
-
-                document.getElementById("police_fields").style.display = (role === "police") ? "block" : "none";
-            }
-        </script>
+<body bgcolor="#f4f6f9">
+    <center>
+        <div style="border: 1px solid black; padding:15px; margin-bottom:20px; width:30%;">
+            <h1> User Resigtration</h1>
+            <form action="register.php" method="POST">
+                First Name: <br>
+                <input type="text" name="first_name" required><br><br>
+                Last Name: <br>
+                <input type="text" name="last_name"><br><br>
+                NID: <br>
+                <input type="number" name="NID" required><br><br>
+                Email: <br>
+                <input type="email" name="email" required><br><br>
+                Phone: <br>
+                <input type="text" name="phone" required><br><br>
+                Role: <br>
+                <select name="role" onchange="policeFields(this.value)">
+                    <option value="user">User</option>
+                    <option value="police">Police</option>
+                </select><br><br>
 
 
-        Password: <br>
-        <input type="password" name="password" required><br><br>
-        <input type="submit" value="Register">
-    </form>
+                <!--IF POLICE-->
+
+
+                <div id="police_fields" style="display:none;">
+                    Badge no: <br>
+                    <input type="text" name="badge_no"> <br><br>
+                    Rank: <br>
+                    <input type="text" name="rank"> <br><br>
+                    Station ID: <br>
+                    <input type="text" name="station_id"><br><br>
+                </div>
+
+
+                <!--JAVASCRIPT FUNCTION-->
+
+
+                <script>
+                    function policeFields(role) {
+
+                        document.getElementById("police_fields").style.display = (role === "police") ? "block" : "none";
+                    }
+                </script>
+              Password: <br>
+                <input type="password" name="password" required><br><br>
+                <input type="submit" value="Register">
+            </form>
+    </center>
+    </div>
 </body>
 
 </html>

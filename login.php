@@ -4,6 +4,7 @@ include "db_connect.php";
 
 
 //fetch the user
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -30,7 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['role'] = $row['role'];
             $_SESSION['name'] = $row['first_name'];
-            header("Location : view_reports.php");
+            if ($row['role'] === 'admin') {
+                header("Location: admin.php");
+            } else {
+                header("Location: view_reports.php");
+            }
             exit();
         } else {
             $message = "<p style='color:red;'>Invalid password</p>";
@@ -43,22 +48,34 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<body>
-    <h1>User login</h1>
-    <?php
-    if (isset($message)) {
-        echo $message;
-    }
-    ?>
-    <form action="login.php" method="POST">
-        Email: <br>
-        <input type="text" name="email" required><br><br>
-        Password: <br>
-        <input type="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-    </form>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body bgcolor="#f4f6f9">
+    <center>
+                     <div style="border: 1px solid black; padding:15px; margin-bottom:20px; width: 20%;">
+
+        <h1>User login</h1>
+            <?php
+            if (isset($message)) {
+                echo $message;
+            }
+            ?>
+            <form action="login.php" method="POST">
+                Email: <br>
+                <input type="text" name="email" required><br><br>
+                Password: <br>
+                <input type="password" name="password" required><br><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </center>
 </body>
 
 </html>
