@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
 //fetching law enforcement flagging status
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reason'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['flag_report'])) {
     if ($_SESSION['role'] === 'police') {
         $id = intval($_POST['report_id']);
         $reason = $conn->real_escape_string($_POST['reason']);
@@ -114,16 +114,24 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['submit_report'])) {
     $description = $conn->real_escape_string($_POST['description']);
     $sql = "INSERT INTO reports(user_id, location_id, description, submission_date) VALUES('$user_id', '$location_id', '$description', NOW())";
     if ($conn->query($sql)) {
-        $message = " <h2 style='color:green;'> Crime report submitted successfully</h2>";
+        $report_id = $conn->insert_id;
+        foreach ($_POST['category_id'] as $category_id) {
+            $cat_id = intval($category_id);
+            $conn->query("INSERT INTO report_category(report_id, category_id) VALUES($report_id,$cat_id)");
+        }
+        $_SESSION['success'] = "Report submitted";
+        header("Location: view_reports.php");
+        exit();
     } else {
-        $message = " <h2 style='color:red'>Error: " . $conn->error . "</h2> ";
-    }
-    $report_id = $conn->insert_id;
-    foreach ($_POST['category_id'] as $category_id) {
-        $cat_id = intval($category_id);
-        $conn->query("INSERT INTO report_category(report_id, category_id) VALUES($report_id,$cat_id)");
+        $_SESSION['error'] = $conn->error;
+        header("Location: view_reports.php");
+        exit();
     }
 }
+
+
+//report submitted/ didnt
+
 
 
 //load locations for dropdown
@@ -142,6 +150,7 @@ $category_result = $conn->query($category_sql);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -150,6 +159,7 @@ $category_result = $conn->query($category_sql);
 </head>
 
 <body bgcolor="#f4f6f9">
+
 
 
     <!--welcome logout-->
@@ -161,12 +171,28 @@ $category_result = $conn->query($category_sql);
     <hr>
 
 
+
+
     <!--submit a report-->
 
 
     <h2>Submit a Crime Report</h2>
     <div style="border: 1px solid black; padding:15px; margin-bottom:20px;">
-        <?php if (isset($message)) echo $message; ?>
+        <?php
+
+
+        //report submitted/ didnt
+
+
+        if (isset($_SESSION['success'])) {
+            echo "<h2 style='color:green;'>" . $_SESSION['success'] . "</h2>";
+            unset($_SESSION['success']);
+        }
+        if (isset($_SESSION['error'])) {
+            echo "<h2 style='color:red;'>Error: " . $_SESSION['error'] . "</h2>";
+            unset($_SESSION['error']);
+        } ?>
+
         <form method="POST">
             <input type="hidden" name="submit_report" value="1">
 
@@ -331,7 +357,6 @@ $category_result = $conn->query($category_sql);
         <?php if ($_SESSION['role'] === 'police') {
             $flag_check = $conn->query("SELECT * FROM report_flags WHERE report_id = $report_id AND user_id= $user_id");
             if ($flag_check->num_rows == 0) { ?>
-                </form>
                 Flag the Report:
                 <form method="POST" style="margin-top:5px;">
                     <input type="hidden" name="report_id" value="<?php echo $report_id; ?>">
